@@ -1,0 +1,17 @@
+
+
+.gridBox:onmouseenter {
+    background-color: pink;
+    transition-duration: 500ms;
+    transition .05s ease;
+
+    animation-name: revertBackgroundColor;
+    animation-duration: 10s; /* Change this duration to control the wait time */
+    animation-fill-mode: forwards;
+}
+
+@keyframes revertBackgroundColor {
+    to {
+      background-color: white  ; /* Revert to the original color */
+    }
+}

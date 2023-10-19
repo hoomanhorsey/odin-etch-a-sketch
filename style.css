@@ -1,17 +1,25 @@
 
+h1 {
+  text-align: center;
+}
 
-.gridBox:onmouseenter {
+body {
+  background-color: #DAF0F7;
+}
+
+.gridBox {
+  background-color: white;
+}
+
+
+/*.gridBox:hover {
     background-color: pink;
     transition-duration: 500ms;
     transition .05s ease;
 
-    animation-name: revertBackgroundColor;
-    animation-duration: 10s; /* Change this duration to control the wait time */
-    animation-fill-mode: forwards;
+
 }
 
-@keyframes revertBackgroundColor {
-    to {
-      background-color: white  ; /* Revert to the original color */
-    }
+br {
+  flex-basis: 100%;
 }

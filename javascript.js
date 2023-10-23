@@ -3,7 +3,6 @@ addEventListener('DOMContentLoaded', () => {
 let container = document.querySelector('container');
     container.setAttribute("class", "container");
 
-
 // set out initial default grid
 drawGrid(container, 16);
 
@@ -47,7 +46,6 @@ function drawGrid(container, gridSize) {
         rowContainer.style.height = `${rowHeight}px`;
         console.log(rowHeight);
 
-
         rowContainer.setAttribute("class", "rowContainer");
             
         container.appendChild(rowContainer);
@@ -70,41 +68,13 @@ function drawGrid(container, gridSize) {
             squareDiv.style.width = squareDivSize.width;
             squareDiv.style.height = squareDivSize.height;
             
-            rowContainer.appendChild(squareDiv);   
-          
-
-
-            
-            
-
+            rowContainer.appendChild(squareDiv);          
         }
         let lineBreak = document.createElement('div');
         lineBreak.setAttribute("class", "lineBreak")
         container.appendChild(lineBreak);
         }
     } // end function drawGrid
-
-/*
-function toggleClickState() {
-
-    let statusDiv = document.querySelector('statusDiv');
-
-    if (clickState === 'un-clicked') {
-        statusP.textContent = "";
-        clickState ='clicked';      
-        statusP.textContent = clickState;
-        container.appendChild(statusP);     
-    } else {
-        statusP.textContent = "";
-        clickState = 'un-clicked';
-        statusP.textContent = clickState;
-        statusDiv.appendChild(statusP);       
-        }
-    } // end function toggleClickState
-8*/
-
-
-
 
 function drawColor(clickState) {
 
@@ -165,3 +135,24 @@ function drawColor(clickState) {
 
 
 }) //end program
+
+
+
+/*
+function toggleClickState() {
+
+    let statusDiv = document.querySelector('statusDiv');
+
+    if (clickState === 'un-clicked') {
+        statusP.textContent = "";
+        clickState ='clicked';      
+        statusP.textContent = clickState;
+        container.appendChild(statusP);     
+    } else {
+        statusP.textContent = "";
+        clickState = 'un-clicked';
+        statusP.textContent = clickState;
+        statusDiv.appendChild(statusP);       
+        }
+    } // end function toggleClickState
+*/

@@ -1,0 +1,64 @@
+create a toggle variable for when you have the mousebutton down
+
+
+this should be after you're in the 'click event' listener, for now.
+
+then the 'mouseover' coloring will only work if the mouse is down.
+
+
+
+
+
+
+
+
+
+draw color when:
+    - mouse is pressed down 
+    AND 
+    - cursor enters into a gridbox
+
+stop drawing color when:
+    - mouse is pressed up
+
+
+
+const squares = document.querySelectorAll('.square');
+const colorButtons = document.querySelectorAll('.color-buttons button');
+let activeColor = null; // Initialize with no active color class
+let isColoringEnabled = true; // Flag to control color application
+let isMouseOverSquare = false; // Flag to track whether the mouse is over a square
+
+// Add click event listeners to color buttons
+colorButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        activeColor = button.id;
+    });
+});
+
+// Add mouseenter and mouseleave event listeners to each square
+squares.forEach(square => {
+    square.addEventListener('mouseenter', () => {
+        isMouseOverSquare = true;
+        if (isColoringEnabled && activeColor) {
+            square.classList.remove('color-1', 'color-2', 'color-3');
+            square.classList.add(activeColor);
+        }
+    });
+
+    square.addEventListener('mouseleave', () => {
+        isMouseOverSquare = false;
+    });
+
+    square.addEventListener('click', () => {
+        if (!isMouseOverSquare) {
+            isColoringEnabled = !isColoringEnabled;
+        }
+    });
+});
+
+// Add click event listener to the document body to toggle color application
+document.body.addEventListener('click', () => {
+    isColoringEnabled = !isColoringEnabled;
+});
+

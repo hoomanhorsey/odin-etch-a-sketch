@@ -24,6 +24,24 @@ body {
 }
 
 
+.drawingDiv {
+  display: flex;
+}
+.menu {
+  display:flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 0px 30px;
+}
+
+.menuBtn{
+  margin: 10px;
+  padding: 10px;
+  background-color: bisque;
+  border-radius: 25%;
+
+}
+
 .container {
   display: flex; 
   flex-wrap: wrap; 

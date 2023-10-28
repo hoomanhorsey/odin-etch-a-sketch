@@ -1,5 +1,4 @@
 
-
 .header {
   display:flex;
   align-items: center;
@@ -15,11 +14,8 @@ h1 {
 body {
   display:flex;
   flex-direction: column;
-
   justify-content: center;
   align-items:center;
-
-
   background-color: #DAF0F7;
 }
 
@@ -35,7 +31,25 @@ body {
 
 }
 
+.colorPalette {
+  margin: 25px 25px;
+}
+.paletteRow{
+  display:flex;
+  display:flex; 
+  flex-direction: row;
+  min-width: 200px;
+}
+.paletteBox {
+  flex: auto;
+  border-style: solid;
+  border-width: 1px;
+  min-width: 50px;
+  min-height: 50px;
+}
+
 .menuBtn {
+  flex: auto;
   margin: 10px;
   padding: 10px;
   background-color: bisque;
@@ -45,6 +59,7 @@ body {
   border-width: 1px;
   font-family: 'Courier New', Courier, monospace;
   font-size: medium;
+  text-align: center;
 
 }
 a:visited {
@@ -104,3 +119,56 @@ a:visited {
 }
 
 
+
+
+
+
+
+.pBColorRed {
+  background-color: red;
+}
+.pBColorOrange {
+  background-color: orange;
+}
+.pBColorBlue {
+  background-color: blue;
+}
+.pBColorGreen {
+  background-color: green;
+}
+.pBColorMoreGreen {
+  background-color: rgb(0, 128, 0);
+}
+.pBColorRed {
+  background-color: red;
+}
+.pBColorRed {
+  background-color: red;
+}
+.pBColorRed {
+  background-color: red;
+}
+.pBColorRed {
+  background-color: red;
+}
+.pBColorRed {
+  background-color: red;
+}
+.pBColorRed {
+  background-color: red;
+}
+.pBColorRed {
+  background-color: red;
+}
+.pBColorRed {
+  background-color: red;
+}
+.pBColorRed {
+  background-color: red;
+}
+.pBColorRed {
+  background-color: red;
+}
+.pBColorRed {
+  background-color: red;
+}

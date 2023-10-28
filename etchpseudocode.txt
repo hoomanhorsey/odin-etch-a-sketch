@@ -1,3 +1,14 @@
+resources on saved file
+https://www.linuxscrew.com/javascript-write-to-file
+
+jsonparse
+https://www.w3schools.com/js/js_json_parse.asp#:~:text=Use%20the%20JavaScript%20function%20JSON,will%20get%20a%20syntax%20error.
+json stringify
+
+chatGPT on loading a local file
+https://chat.openai.com/c/b81a1234-9959-4a7d-896c-ff05f8c7a017
+
+
 create a toggle variable for when you have the mousebutton down
 
 

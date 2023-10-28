@@ -6,37 +6,26 @@ let container = document.querySelector('container');
 // Default grid size
 let gridSize = 16;
 
-// Listeners to determine mouse button up or down, for drawing
+// Determine mouse up or down to activate drawing
 let mouseStatus = 'up';
-
 container.addEventListener('mousedown', () => {
      mouseStatus = 'down';
      });
-
- container.addEventListener('mouseup', () => { 
+container.addEventListener('mouseup', () => { 
      mouseStatus = 'up';
      });
 
 // choose menu item
 selectedMenuBtn = document.querySelectorAll('.menuBtn');
 
-let blackBtn = document.querySelector('#blackBtn');
 let randomBtn = document.querySelector('#randomBtn');
 let eraseBtn = document.querySelector('#eraseBtn');
 
 selectedMenuBtn.forEach((e) =>
     e.addEventListener('click', (e)=> {
         switch(e.target.textContent){
-            case 'black':               
+            case 'random colours!':
                 e.target.style.backgroundColor = "lightblue";
-                randomBtn.style.backgroundColor = "bisque";
-                eraseBtn.style.backgroundColor = "bisque";
-                draw("black");
-                break;
-
-            case 'random':
-                e.target.style.backgroundColor = "lightblue";
-                blackBtn.style.backgroundColor = "bisque";
                 eraseBtn.style.backgroundColor = "bisque";
                 let colorType = "random";
                 draw("random", colorType);    
@@ -45,22 +34,18 @@ selectedMenuBtn.forEach((e) =>
             case 'eraser':
                 e.target.style.backgroundColor = "lightblue";
                 randomBtn.style.backgroundColor = "bisque";
-                blackBtn.style.backgroundColor = "bisque";
                 draw("white");
                 break;
         
-            case 'clear':
+            case 'clear screen':
                 randomBtn.style.backgroundColor = "bisque";
-                blackBtn.style.backgroundColor = "bisque";
                 eraseBtn.style.backgroundColor = "bisque";
-                drawGrid(container, gridSize);
+                createGrid(container, gridSize);
                 break;
 
             case 'resize':
                 randomBtn.style.backgroundColor = "bisque";
-                blackBtn.style.backgroundColor = "bisque";
                 eraseBtn.style.backgroundColor = "bisque";
-                
                 do  {
                     gridSize = parseInt(prompt('How big your grid? No bigger than 100 boxes across please'));
                     if (!gridSize) {
@@ -70,27 +55,58 @@ selectedMenuBtn.forEach((e) =>
                 }      
                 while ((gridSize > 100) || (Number.isInteger(gridSize) == false));
 
-                drawGrid(container, gridSize);
+                createGrid(container, gridSize);
                 break;
-
-            case 'save image':
-                saveImage();
-                break;
-            case 'load image':
-                loadImage();
-                break
 
             case 'save to file':
-                let file = saveImage();
-                console.log(file);
-                generateTextFileUrl(file);
+                let JSONfile = saveImage();
+                generateTextFileUrl(JSONfile);
+
               } } ) )
 
 // set out initial default grid
-drawGrid(container, gridSize);
+createGrid(container, gridSize);
+createColorPalette();
 
+// choose pen color from palette
+selectedPaletteBoxes = document.querySelectorAll('.paletteBox');
+selectedPaletteBoxes.forEach((e) => {
+   e.addEventListener('click', () => {      
+    const backgroundColor = getComputedStyle(e).backgroundColor;
+    draw(backgroundColor);
+        });
+    })
 
-function drawGrid(container, gridSize) {
+// construct color palette 
+function createColorPalette() {
+let colorPaletteDiv = document.querySelector('.colorPalette');
+for (let i = 0; i < 5; i++) {
+    let paletteRow = document.createElement('div');
+    paletteRow.setAttribute('class', 'paletteRow');
+    colorPaletteDiv.appendChild(paletteRow);
+
+    for (let j = 0; j < 5; j++) {
+        let paletteBox = document.createElement('div');
+        paletteBox.setAttribute('class', 'paletteBox');
+        paletteRow.appendChild(paletteBox);
+        }
+        }
+    } // end drawcolorPalette function
+
+const paletteColors = ['maroon', 'brown','olive', 'teal','navy', 
+    'black','red', 'orange', 'yellow', 'lime','green','cyan', 
+    'blue', 'purple', 'magenta','grey', 'pink', 'rgb(255, 215, 180)', 
+    'beige', 'rgb(170, 255, 195)', 'lavender', 'white'];
+let paletteBoxes = document.querySelectorAll('.paletteBox')
+let paletteIndex = 0;
+paletteBoxes.forEach((e) => {
+    
+    e.style.backgroundColor = 'blue';
+    e.style.backgroundColor = paletteColors[paletteIndex];
+    paletteIndex++;
+})
+
+function createGrid(container, gridSize) {
     // clears out container
     container.innerHTML = "";
 
@@ -128,7 +144,7 @@ function drawGrid(container, gridSize) {
         lineBreak.setAttribute("class", "lineBreak")
         container.appendChild(lineBreak);
         }
-    } // end function drawGrid
+    } // end function createGrid
 
 
 function draw(color, colorType) {
@@ -189,42 +205,25 @@ colorValueAsArray = ['0', '0', '0', '0', '0', '0'];
                 return "#"+colorValueAsArray.join("");
         } //end function genRanColor
 
-
+// converts image data into a JSON format
 function saveImage() {
 
     // reinsert functionality once you have figured out the save file.
-    //let fileName = prompt("Please enter a file name")
+    let fileName = prompt("Please enter a file name")
     //fileName = fileName + ".etch"
     //alert(fileName);
 
+    // create array for image data
     const saveFile = {fileType:'etch', imageSize:gridSize, imageData:[]}
-    //console.log(saveFile)
 
-    container = document.querySelector('.container');
+    // query each gridBox and extract color information
     gridBoxes = document.querySelectorAll('.gridBox');
     gridBoxes.forEach( (e) => {
         saveFile['imageData'].push(e.style.backgroundColor);
-        }
-            );
-
-    
-    for (let i = 1; i < (gridSize +1); i++) {
-        //rowContainer = document.querySelector('.rowContainer');
-        //console.log(rowContainer);
-
-        for (let j = 1; j < (gridSize + 1); j++) {
-            //gridBox = document.querySelector('.gridBox');
-            //console.log(gridBox);   
-
-        }
-
-    }
+        });   
 
     const saveFileJSON = JSON.stringify(saveFile);
     return saveFileJSON;
-
-    const objectAgain = JSON.parse(saveFileJSON);
-
     } //end function saveImage
 
 function loadImage(saveFile) {
@@ -237,13 +236,12 @@ function loadImage(saveFile) {
     }
 
 
-    drawGrid(container, saveFile.imageSize);
+    createGrid(container, saveFile.imageSize);
 
     gridBoxes = document.querySelectorAll('.gridBox');
     let colorRef = 0;
     gridBoxes.forEach( (e) => {
-           {
-                                    
+           {                                  
                 e.style.backgroundColor = saveFile.imageData[colorRef];
                 colorRef++;
         }
@@ -251,14 +249,15 @@ function loadImage(saveFile) {
     }
 
 
+// Save JSON file as a downloadable file:
+
 // A global variable should be defined to hold the URL for the file to be downloaded
 // This is good practice as if many links are being generated or the link is being 
 // regularly updated, you don't want to be creating new variables every time, wasting memory
 var textFileUrl = null;
-
-// Function for generating a text file URL containing given text
-function generateTextFileUrl(txt) {
-    let fileData = new Blob([txt], {type: 'text/plain'});
+// Generat a text file URL 
+function generateTextFileUrl(JSONfile) {
+    let fileData = new Blob([JSONfile], {type: 'text/plain'});
     // If a file has been previously generated, revoke the existing URL
     if (textFileUrl !== null) {
         window.URL.revokeObjectURL(textFileUrl);
@@ -267,10 +266,7 @@ function generateTextFileUrl(txt) {
     // Returns a reference to the global variable holding the URL
     // Again, this is better than generating and returning the URL 
     // itself from the function as it will eat memory if the file contents are large or regularly changing
-    document.getElementById('downloadLink').href = textFileUrl;
-    
-    //document.getElementById('downloadLink').href = textFileUrl;
-
+    document.getElementById('downloadLink').href = textFileUrl; 
     //return textFileUrl;
     };
     // Generate the file download URL and assign it to the link

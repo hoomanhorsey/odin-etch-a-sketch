@@ -25,7 +25,8 @@ body {
 }
 .menu {
   display:flex;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   padding: 0px 30px;
 
@@ -50,7 +51,7 @@ body {
 
 .menuBtn {
   flex: auto;
-  margin: 10px;
+  margin: 10px 10px;
   padding: 10px;
   background-color: bisque;
   border-radius: 25%;
@@ -60,13 +61,21 @@ body {
   font-family: 'Courier New', Courier, monospace;
   font-size: medium;
   text-align: center;
-
+  width: 270px;
 }
+
+.customBtn {
+  padding: 30px 0px 0px 0px;
+}
+.customBtnLoad {
+  padding: 40px 0px 0px 0px;
+}
+
 a:visited {
   text-decoration: none;
 }
 
-.container {
+.canvas {
   display: flex; 
   flex-wrap: wrap; 
   
@@ -78,7 +87,7 @@ a:visited {
   height: 1000px;
 }
 
-.rowContainer {
+.rowCanvas {
   display:flex; 
   flex-wrap: nowrap; 
   flex: auto;

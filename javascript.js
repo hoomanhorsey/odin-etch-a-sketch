@@ -1,17 +1,23 @@
 addEventListener('DOMContentLoaded', () => {
 
-let container = document.querySelector('container');
-    container.setAttribute("class", "container");
+// Declare canvas variable 
+let canvas = document.querySelector('container');
+    canvas.setAttribute("class", "canvas");
 
 // Default grid size
 let gridSize = 16;
 
-// Determine mouse up or down to activate drawing
+// Create initial grid
+createGrid(canvas, gridSize);
+createColorPalette();
+
+
+// Determine mouse up or down to activate pen
 let mouseStatus = 'up';
-container.addEventListener('mousedown', () => {
+canvas.addEventListener('mousedown', () => {
      mouseStatus = 'down';
      });
-container.addEventListener('mouseup', () => { 
+canvas.addEventListener('mouseup', () => { 
      mouseStatus = 'up';
      });
 
@@ -23,6 +29,8 @@ let eraseBtn = document.querySelector('#eraseBtn');
 
 selectedMenuBtn.forEach((e) =>
     e.addEventListener('click', (e)=> {
+        console.log(e.target.textContent);
+
         switch(e.target.textContent){
             case 'random colours!':
                 e.target.style.backgroundColor = "lightblue";
@@ -40,7 +48,7 @@ selectedMenuBtn.forEach((e) =>
             case 'clear screen':
                 randomBtn.style.backgroundColor = "bisque";
                 eraseBtn.style.backgroundColor = "bisque";
-                createGrid(container, gridSize);
+                createGrid(canvas, gridSize);
                 break;
 
             case 'resize':
@@ -54,19 +62,15 @@ selectedMenuBtn.forEach((e) =>
                         }                   
                 }      
                 while ((gridSize > 100) || (Number.isInteger(gridSize) == false));
-
-                createGrid(container, gridSize);
+                createGrid(canvas, gridSize);
                 break;
 
             case 'save to file':
-                let JSONfile = saveImage();
+                let JSONfile = saveImageToJSON();
                 generateTextFileUrl(JSONfile);
-
+                break;
               } } ) )
 
-// set out initial default grid
-createGrid(container, gridSize);
-createColorPalette();
 
 // choose pen color from palette
 selectedPaletteBoxes = document.querySelectorAll('.paletteBox');
@@ -77,7 +81,6 @@ selectedPaletteBoxes.forEach((e) => {
         });
     })
 
-// construct color palette 
 function createColorPalette() {
 let colorPaletteDiv = document.querySelector('.colorPalette');
 for (let i = 0; i < 5; i++) {
@@ -89,37 +92,37 @@ for (let i = 0; i < 5; i++) {
         let paletteBox = document.createElement('div');
         paletteBox.setAttribute('class', 'paletteBox');
         paletteRow.appendChild(paletteBox);
-        }
-        }
-    } // end drawcolorPalette function
+        }}
 
-const paletteColors = ['maroon', 'brown','olive', 'teal','navy', 
+    const paletteColors = ['maroon', 'brown','olive', 'teal','navy', 
     'black','red', 'orange', 'yellow', 'lime','green','cyan', 
     'blue', 'purple', 'magenta','grey', 'pink', 'rgb(255, 215, 180)', 
-    'beige', 'rgb(170, 255, 195)', 'lavender', 'white'];
-let paletteBoxes = document.querySelectorAll('.paletteBox')
-let paletteIndex = 0;
-paletteBoxes.forEach((e) => {
-    
-    e.style.backgroundColor = 'blue';
-    e.style.backgroundColor = paletteColors[paletteIndex];
-    paletteIndex++;
-})
+    'beige', 'rgb(170, 255, 195)', 'lavender', 'white', '#E0BBE4', '#E84D76', '#BAD9F8'];
+    let paletteBoxes = document.querySelectorAll('.paletteBox')
+    let paletteIndex = 0;
 
-function createGrid(container, gridSize) {
-    // clears out container
-    container.innerHTML = "";
+    paletteBoxes.forEach((e) => {
+
+        e.style.backgroundColor = 'blue';
+        e.style.backgroundColor = paletteColors[paletteIndex];
+        paletteIndex++;
+        })} // end drawcolorPalette function
+
+
+function createGrid(canvas, gridSize) {
+    // clears out canvas
+    canvas.innerHTML = "";
 
       for (let i = 1; i < (gridSize +1); i++) {
 
-        let rowContainer = document.createElement('div');
+        let rowCanvas = document.createElement('div');
         let rowHeight = Math.floor(1000 / gridSize);
 
-        rowContainer.style.height = `${rowHeight}px`;
+        rowCanvas.style.height = `${rowHeight}px`;
 
-        rowContainer.setAttribute("class", "rowContainer");
+        rowCanvas.setAttribute("class", "rowCanvas");
             
-        container.appendChild(rowContainer);
+        canvas.appendChild(rowCanvas);
     
         for (let j = 1; j < (gridSize + 1); j++) {
     
@@ -138,11 +141,11 @@ function createGrid(container, gridSize) {
             squareDiv.style.width = squareDivSize.width;
             squareDiv.style.height = squareDivSize.height;
             
-            rowContainer.appendChild(squareDiv);          
+            rowCanvas.appendChild(squareDiv);          
         }
         let lineBreak = document.createElement('div');
         lineBreak.setAttribute("class", "lineBreak")
-        container.appendChild(lineBreak);
+        canvas.appendChild(lineBreak);
         }
     } // end function createGrid
 
@@ -205,11 +208,10 @@ colorValueAsArray = ['0', '0', '0', '0', '0', '0'];
                 return "#"+colorValueAsArray.join("");
         } //end function genRanColor
 
-// converts image data into a JSON format
-function saveImage() {
+function saveImageToJSON() {
 
-    // reinsert functionality once you have figured out the save file.
-    let fileName = prompt("Please enter a file name")
+    // possibly redundant, to be deleted
+    // let fileName = prompt("Please enter a file name")
     //fileName = fileName + ".etch"
     //alert(fileName);
 
@@ -224,20 +226,16 @@ function saveImage() {
 
     const saveFileJSON = JSON.stringify(saveFile);
     return saveFileJSON;
-    } //end function saveImage
+    } //end function saveImageToJSON
 
 function loadImage(saveFile) {
-    //saveFile = {fileType:'etch', imageSize:2, imageData:['rgb(114, 33, 173)', '', '', 'rgb(216, 46, 252)']}
-    
+   
     // check file
-
     if (saveFile['fileType'] != 'etch') {
-        alert('Sorry. Incorrect file type');
+        alert('Sorry. Incorrect file type. While this program uses ".txt" files to save images, images must have been saved in this program to be loaded.');
+        return;
     }
-
-
-    createGrid(container, saveFile.imageSize);
-
+    createGrid(canvas, saveFile.imageSize);
     gridBoxes = document.querySelectorAll('.gridBox');
     let colorRef = 0;
     gridBoxes.forEach( (e) => {
@@ -248,14 +246,11 @@ function loadImage(saveFile) {
        }   );
     }
 
-
 // Save JSON file as a downloadable file:
 
-// A global variable should be defined to hold the URL for the file to be downloaded
-// This is good practice as if many links are being generated or the link is being 
-// regularly updated, you don't want to be creating new variables every time, wasting memory
-var textFileUrl = null;
-// Generat a text file URL 
+var textFileUrl = null; // Global variable to store the URL for the file to be downloaded
+
+// Generate a text file URL 
 function generateTextFileUrl(JSONfile) {
     let fileData = new Blob([JSONfile], {type: 'text/plain'});
     // If a file has been previously generated, revoke the existing URL
@@ -264,26 +259,12 @@ function generateTextFileUrl(JSONfile) {
     }
     textFileUrl = window.URL.createObjectURL(fileData);
     // Returns a reference to the global variable holding the URL
-    // Again, this is better than generating and returning the URL 
-    // itself from the function as it will eat memory if the file contents are large or regularly changing
     document.getElementById('downloadLink').href = textFileUrl; 
-    //return textFileUrl;
-    };
-    // Generate the file download URL and assign it to the link
-    // Wait until the page has loaded! Otherwise the download link element will not exist
-    // window.addEventListener("load", function(){
-        
-    //     document.getElementById('downloadLink').href = generateTextFileUrl("boo hoo");
-    // });
+     };
+   
 
-
-
-
-
-
-// Get references to the input element and the pre element for displaying file contents.
-const fileInput = document.getElementById('fileInput');
-const fileContents = document.getElementById('fileContents');
+// Load file
+const fileInput = document.getElementById('fileInput'); // Get input element 
 
 // Add an event listener to the file input element.
 fileInput.addEventListener('change', function() {
@@ -296,59 +277,12 @@ fileInput.addEventListener('change', function() {
             const contents = event.target.result;
             const objectAgain = JSON.parse(contents);
             loadImage(objectAgain);
-            //fileContents.textContent = contents;
         };
-
         reader.readAsText(selectedFile);
-        console.log(selectedFile);
     } else {
         fileContents.textContent = 'No file selected.';
     }})
 
-
-
-
-
-
-
-
+    
 }) //end program
 
-
-// set drawing state and create 'p' to display draw state
-// let clickState = 'un-clicked';
-// statusP = document.createElement('p');
-/*
-function toggleClickState() {
-
-    let statusDiv = document.querySelector('statusDiv');
-
-    if (clickState === 'un-clicked') {
-        statusP.textContent = "";
-        clickState ='clicked';      
-        statusP.textContent = clickState;
-        container.appendChild(statusP);     
-    } else {
-        statusP.textContent = "";
-        clickState = 'un-clicked';
-        statusP.textContent = clickState;
-        statusDiv.appendChild(statusP);       
-        }
-    } // end function toggleClickState
-*/
-
-// Listening to determining clicks on drawing grid to turn pen on and off
-// let isColoringEnabled = false;
-// let isMouseOverContainer = false;
-
-// container.addEventListener('mouseenter', () =>{
-//     isMouseOverContainer = true;})
-// container.addEventListener('mouseleave', () =>{
-//     isMouseOverContainer = false;})
-
-// document.body.addEventListener('click', () => {
-//     if (isMouseOverContainer === true) {
-//         if (isColoringEnabled === false) {
-//             isColoringEnabled = true;
-//         } else {isColoringEnabled = false;
-        // }}})
